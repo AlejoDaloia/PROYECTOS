@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="formulario.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Formulario CleanMasters</title>
+</head>
+<body>
+    <div class="encabezado">
+        <img class="imagen" src="/assets/logo.jfif" alt="">
+    </div>
+    <h2 style="text-align: center;">Formulario para empleados</h2>
+    <div class="container">
+        <form id="empleadosForm">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Nombre">
+                </div>
+                <div class="col-sm-4">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" placeholder="Apellido">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="calle">Calle</label>
+                    <input type="text" id="calle" placeholder="Calle">
+                </div>
+                <div class="col-sm-4">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" placeholder="Número">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="piso">Piso</label>
+                    <input type="text" id="piso" placeholder="Piso">
+                </div>
+                <div class="col-sm-4">
+                    <label for="departamento">Departamento</label>
+                    <input type="text" id="departamento" placeholder="Departamento">
+                </div>
+                <div class="col-sm-4">
+                    <label for="ciudad">Ciudad</label>
+                    <select name="ciudad" id="ciudad">
+                        <option value="">Seleccione una ciudad</option>
+                        <option value="vm">Villa María</option>
+                        <option value="vn">Villa Nueva</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row buttons-container">
+                <div class="col-md-2"><button type="submit">Guardar</button></div>
+                <div class="col-md-2"><button type="button" id="listar">Listar</button></div>
+            </div>
+        </form>
+        <div id="mensaje"></div>
+        <div id="registros"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="formulario.js"></script>
+</body>
+</html>
+
+
+
