@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/handl3r_logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="cliente.css">
+
+    <!-- Bootstrap CSS (Versión 4.5.2) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <title>Clientes - Handl3r</title>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="header-box d-flex justify-content-between align-items-center">
+            <button class="openbtn">&#9776; Menu</button>
+            <div class="header-content d-flex align-items-center">
+                Handl3r <img src="/assets/handl3r_logo.jpg" alt="logo" />
+            </div>
+        </div>
+        <div class="content text-center mt-5 container">
+            <h2>CLIENTES</h2>
+            <div class="modal" id="modalform" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Registrar Cliente</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono">
+                            </div>
+                            <div class="mb-3">
+                                <label for="domicilio" class="form-label">Domicilio</label>
+                                <input type="text" class="form-control" id="domicilio">
+                            </div>
+                            <div class="mb-3">
+                                <label for="barrio" class="form-label">Barrio</label>
+                                <select class="form-control" id="barrio">
+                                    <option value="carlos_pellegrini">Carlos Pellegrini</option>
+                                    <option value="parque_norte">Parque Norte</option>
+                                    <option value="trinitarios">Trinitarios</option>
+                                </select>
+                            </div>                            
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="button-group mb-4">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalform">
+                    Agregar cliente
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="clients-table table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Domicilio</th>
+                            <th>Barrio</th>
+                            <th>Última Compra</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Juan Pérez</td>
+                            <td>+54 123 456 7890</td>
+                            <td>Calle Falsa 100</td>
+                            <td>Carlos Pellegrini</td>
+                            <td>30/07/2024</td>
+                            <td class="button-cell">
+                                <button class="action-button mod-button btn btn-primary">Modificar</button>
+                                <button class="action-button delete-button btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>María García</td>
+                            <td>+54 987 654 3210</td>
+                            <td>Calle Falsa 200</td>
+                            <td>Parque Norte</td>
+                            <td>25/07/2024</td>
+                            <td class="button-cell">
+                                <button class="action-button mod-button btn btn-primary">Modificar</button>
+                                <button class="action-button delete-button btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Roberto López</td>
+                            <td>+54 555 123 4567</td>
+                            <td>Calle Falsa 300</td>
+                            <td>Trinitarios</td>
+                            <td>15/07/2024</td>
+                            <td class="button-cell">
+                                <button class="action-button mod-button btn btn-primary">Modificar</button>
+                                <button class="action-button delete-button btn btn-danger">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
