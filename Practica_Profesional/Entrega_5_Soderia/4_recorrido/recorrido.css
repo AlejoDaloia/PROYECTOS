@@ -4,8 +4,8 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     font-family: fuente;
     box-sizing: border-box;
 }
@@ -16,8 +16,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     flex-direction: column;
+}
+
+.modal-header {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.modal-footer .btn-primary {
+    background-color: #000000;
+    border-color: #000000;
 }
 
 .header-box {
@@ -49,16 +59,6 @@ img {
     border-radius: 25px;
 }
 
-.modal-header {
-    background-color: #000000;
-    color: #ffffff;
-}
-
-.modal-footer .btn-primary {
-    background-color: #000000;
-    border-color: #000000;
-}
-
 .openbtn {
     font-size: 20px;
     cursor: pointer;
@@ -82,7 +82,6 @@ img {
 
 .side-panel {
     background: #000000;
-    padding-top: 20px;
 }
 
 .side-panel a {
@@ -91,15 +90,13 @@ img {
     display: block;
     font-size: 25px;
     color: #ffffff;
-    width: 100%;
-    text-align: left;
 }
 
 .side-panel a:hover {
     color: #73b1b1;
 }
 
-#inventario {
+#proveedor {
     background: #73b1b1;
 }
 
@@ -107,7 +104,7 @@ img {
     padding: 15px;
     color: #ffffff;
     text-align: center;
-    margin-top: auto;
+    margin-top: auto; /* Alinea el footer en la parte inferior */
 }
 
 .content {
@@ -120,13 +117,13 @@ img {
     padding: 0 20px;
 }
 
-.content h2 {
+.content h6 {
     font-size: 36px;
     margin-bottom: 30px;
     color: #000000;
 }
 
-.inventory-table tbody tr {
+.route-table tbody tr {
     background-color: #ffffff;
 }
 
@@ -135,7 +132,7 @@ img {
     overflow-x: auto;
 }
 
-.inventory-table {
+.route-table {
     width: 100%;
     min-width: 600px; /* Asegura que la tabla no se reduzca demasiado en pantallas pequeñas */
 }

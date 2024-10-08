@@ -86,7 +86,10 @@ img {
 }
 
 .button-group {
-    margin-bottom: 30px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .action-button {
@@ -97,24 +100,49 @@ img {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 48%;
+    transition: background-color 0.3s ease;
+}
+
+.action-button.btn-info {
+    background-color: #17a2b8;
+}
+
+.action-button.btn-info:hover {
+    background-color: #138496;
+}
+
+.action-button.btn-success {
+    background-color: #28a745;
+}
+
+.action-button.btn-success:hover {
+    background-color: #218838;
 }
 
 .add-button {
-    background-color: #2ecc71;
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.add-button:hover{
-    background-color: #4bca80;
+.add-button:hover {
+    background-color: #218838;
 }
 
-.delete-button {
-    background-color: #e74c3c;
-    font-size: 14px;
-    margin: 0px;
+.modal-header {
+    background-color: #000000;
+    color: #ffffff;
 }
 
-.delete-button:hover {
-    background-color: #e0695c;
+.modal-footer .btn-primary {
+    background-color: #000000;
+    border-color: #000000;
 }
 
 .openbtn {
@@ -127,7 +155,42 @@ img {
 }
 
 .openbtn:hover {
-    background-color: #444;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.side-panel {
+    background: #000000;
+}
+
+.side-panel a {
+    padding: 15px 15px 15px 32px;
+    text-decoration: none;
+    display: block;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.side-panel a:hover {
+    color: #73b1b1;
+}
+
+#entrega {
+    background: #73b1b1;
+}
+
+.side-panel footer {
+    padding: 15px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: auto;
 }
 
 /* Responsivo */

@@ -5,43 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/handl3r_logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="entrega.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Entregas - Handl3r</title>
 </head>
 <body>
     <div class="header-box">
-        <button class="openbtn">&#9776; Menu</button>
+        <button class="openbtn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">&#9776; Menu</button>
         <div class="header-content">
             Handl3r <img src="/assets/handl3r_logo.jpg" alt="logo">
         </div>
     </div>
+
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menú</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body side-panel">
+            <a id="inicio" href="/1_inicio/index.html">Inicio</a>
+            <a href="/2_inventario/inventario.html">Inventario</a>
+            <a id="entrega" href="/3_entrega/entrega.html">Entregas</a>
+            <a href="/5_cliente/cliente.html">Clientes</a>
+            <a href="/4_recorrido/recorrido.html">Rutas</a>
+            <a href="/0_login/login.html">Cerrar Sesión</a>
+            <footer>Handl3r &#169 2024</footer>
+        </div>
+    </div>
+
     <div class="content">
         <h2>ENTREGAS</h2>
-        <div class="button-group">
-            <button class="action-button add-button">Agregar Entrega</button>
+
+        <div class="modal fade" id="modalform" tabindex="-1" aria-labelledby="modalformLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalformLabel">Registrar Producto</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="cliente-form" class="form-label">Cliente</label>
+                            <select class="form-control" id="cliente-form">
+                                <option value="client-1">Juan Pérez</option>
+                                <option value="client-2">Maria Garcia</option>
+                                <option value="client-3">Roberto López</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ruta-form" class="form-label">Ruta</label>
+                            <select class="form-control" id="ruta-form">
+                                <option value="client-1">Ruta Nº1</option>
+                                <option value="client-2">Ruta Nº2</option>
+                                <option value="client-3">Ruta Nº3</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="empleado-form" class="form-label">Empleado</label>
+                            <select class="form-control" id="empleado-form">
+                                <option value="client-1">Marcos Benotti</option>
+                                <option value="client-2">Julian Marciotti</option>
+                                <option value="client-3">Roberto Trujillo</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vehiculo-form" class="form-label">Vehiculo</label>
+                            <select class="form-control" id="vehiculo-form">
+                                <option value="client-1">Vehiculo Nº1</option>
+                                <option value="client-2">Vehiculo Nº2</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ruta-form" class="form-label">Producto</label>
+                            <select class="form-control" id="ruta-form">
+                                <option value="client-1">Sifón 2L</option>
+                                <option value="client-2">Sifón 1.5L</option>
+                                <option value="client-3">Sifón 1L</option>
+                            </select>
+                            <button class="add-prod-button btn btn-success">+</button>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="text" class="form-control" id="cantidad">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Guardar</button>
+                </div>
+              </div>
+            </div>
         </div>
+
+        <button class="add-button btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#modalform">
+            Nueva entrega
+        </button>
+
         <div class="shipment-detail">
             <div class="shipment-item">
                 <p><strong>Cliente:</strong> Juan Pérez</p>
-                <p><strong>Estado de Entrega:</strong> En Camino</p>
-                <p><strong>Domicilio:</strong> Calle Falsa 100</p>
-                <button class="action-button delete-button">Eliminar Entrega</button>
-            </div>
-            <div class="shipment-item">
-                <p><strong>Cliente:</strong> María García</p>
-                <p><strong>Estado de Entrega:</strong> Entregado</p>
-                <p><strong>Domicilio:</strong> Calle Falsa 200</p>
-                <button class="action-button delete-button">Eliminar Entrega</button>
-            </div>
-            <div class="shipment-item">
-                <p><strong>Cliente:</strong> Roberto López</p>
-                <p><strong>Estado de Entrega:</strong> Pendiente</p>
-                <p><strong>Domicilio:</strong> Calle Falsa 300</p>
-                <button class="action-button delete-button">Eliminar Entrega</button>
+                <p><strong>Ruta:</strong> Ruta Nº1</p>
+                <p><strong>Empleado:</strong> Marcos Benotti</p>
+                <p><strong>Vehículo:</strong> Vehículo Nº1</p>
+                <p><strong>Producto:</strong> Sifón 2L</p>
+                <p><strong>Cantidad:</strong> 10 unidades</p>
+                <div class="button-group">
+                    <button class="action-button btn-info">En camino</button>
+                    <button class="action-button btn-success">Entregado</button>
+                </div>
             </div>
         </div>
+
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

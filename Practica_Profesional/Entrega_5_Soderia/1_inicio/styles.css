@@ -55,7 +55,8 @@ img {
 }
 
 .openbtn:hover {
-    background-color: #4d4d4d; /* Color de hover para el botón */
+    background-color: #ffffff; /* Color de hover para el botón */
+    color: #000000;
 }
 
 .content {
@@ -101,4 +102,3 @@ img {
     text-align: center;
     margin-top: auto; /* Alinea el footer en la parte inferior */
 }
-
