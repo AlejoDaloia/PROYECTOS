@@ -10,15 +10,12 @@
 }
 
 body {
-    background: rgb(190,255,255);
-    background: linear-gradient(120deg, rgba(190,255,255,1) 15%, rgba(160,255,255,1) 30%, rgba(120,255,255,1) 45%, rgba(90,250,250,1) 60%, rgba(40,255,255,1) 75%, rgba(0,255,255,1) 90%);
+    background: rgb(190, 255, 255);
+    background: linear-gradient(120deg, rgba(190, 255, 255, 1) 15%, rgba(160, 255, 255, 1) 30%, rgba(120, 255, 255, 1) 45%, rgba(90, 250, 250, 1) 60%, rgba(40, 255, 255, 1) 75%, rgba(0, 255, 255, 1) 90%);
     font-family: fuente;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
 }
 
 .header {
@@ -59,10 +56,13 @@ img {
 }
 
 .content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 200px; 
+    justify-content: center;
+    padding: 20px;
+    margin-top: 70px; /* Ajuste para que haya un margen entre el header y el contenido */
 }
 
 .title-box {
@@ -107,9 +107,8 @@ input[type="password"] {
 }
 
 button[type="button"] {
-    width: 100%;
+    margin-bottom: 0px;
     padding: 10px;
-    background-color: #2eddc3;
     border: none;
     border-radius: 5px;
     color: white;
@@ -118,15 +117,15 @@ button[type="button"] {
     transition: background-color 0.3s ease;
 }
 
-button[type="button"]:hover {
-    background-color: #26b2a2;
+.ingresar-btn{
+    margin-bottom: 1px;
 }
 
 .footer-box {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+    text-align: center;
     padding: 10px 0;
-    font-family: Arial, Helvetica, sans-serif;
     background-color: #f8f9fa;
+    width: 100%;
+    position: relative;
+    bottom: 0;
 }

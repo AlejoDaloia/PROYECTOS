@@ -66,6 +66,7 @@ img {
     color: #ffffff;
     padding: 10px 15px;
     border: none;
+    transition: background-color 0.3s;
 }
 
 .openbtn:hover {
