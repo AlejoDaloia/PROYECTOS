@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     getProductos();
-
+    getInactiveProductos();
     // Botón para guardar o modificar un producto
     document.getElementById('guardarProducto').addEventListener('click', async () => {
         const nombre = document.getElementById('nombre').value;
         const cantidad = document.getElementById('cantidad').value;
         const precio = document.getElementById('precio').value;
-        const idProducto = document.getElementById('guardarProducto').dataset.id; // Verifica si hay un ID para saber si se está editando
+        const idProducto = document.getElementById('guardarProducto').dataset.id;
 
         if (nombre && cantidad && precio) {
             const producto = {
@@ -57,25 +57,28 @@ async function getProductos() {
     tbody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
 
     data.forEach(producto => {
-        const fecha = new Date(producto.ultima_actualizacion);
-        const dia = String(fecha.getDate()).padStart(2, '0');
-        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-        const año = fecha.getFullYear();
-        const fechaFormateada = `${dia}/${mes}/${año}`;
+        if (producto.estado === 'Activo') { // Mostrar solo productos activos
+            const fecha = new Date(producto.ultima_actualizacion);
+            const dia = String(fecha.getDate()).padStart(2, '0');
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+            const año = fecha.getFullYear();                        
+            const fechaFormateada = `${dia}/${mes}/${año}`;
 
-        const row = `
-            <tr data-id="${producto.idProducto}">
-                <td>${producto.tipo_producto}</td>
-                <td>${producto.cantidad}</td>
-                <td>$${producto.precio.toFixed(2)}</td>
-                <td>${fechaFormateada}</td>
-                <td class="button-cell">
-                    <button class="btn btn-primary btn-modificar" data-bs-toggle="modal" data-bs-target="#modalform">Modificar</button>
-                    <button class="btn btn-danger btn-eliminar">Eliminar</button>
-                </td>
-            </tr>
-        `;
-        tbody.insertAdjacentHTML('beforeend', row);
+            const row = `
+                <tr data-id="${producto.idProducto}">
+                    <td>${producto.tipo_producto}</td>
+                    <td>${producto.cantidad}</td>
+                    <td>$${producto.precio.toFixed(2)}</td>
+                    <td>${fechaFormateada}</td>
+                    <td>${producto.estado}</td>
+                    <td class="button-cell">
+                        <button class="btn btn-primary btn-modificar" data-bs-toggle="modal" data-bs-target="#modalform">Modificar</button>
+                        <button class="btn btn-danger btn-eliminar">Dar de Baja</button>
+                    </td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', row);
+        }
     });
 
     // Agregar eventos a los botones de "Modificar" y "Eliminar"
@@ -87,10 +90,50 @@ async function getProductos() {
     });
 }
 
+async function getInactiveProductos() {
+    const res = await fetch("http://localhost:4000/producto/inactivos");
+    const data = await res.json();
+    
+    const tbody = document.querySelector('.inactive-inventory-table tbody');
+    tbody.innerHTML = ''; // Limpiar la tabla antes de agregar nuevos datos
+
+    data.forEach(producto => {
+        if(producto.estado === 'Inactivo') { // Mostrar solo productos inactivos
+            const fecha = new Date(producto.ultima_actualizacion);
+            const dia = String(fecha.getDate()).padStart(2, '0');
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+            const año = fecha.getFullYear();
+            const fechaFormateada = `${dia}/${mes}/${año}`;
+
+            const row = `
+                <tr data-id="${producto.idProducto}">
+                    <td>${producto.tipo_producto}</td>
+                    <td>${producto.cantidad}</td>
+                    <td>$${producto.precio.toFixed(2)}</td>
+                    <td>${fechaFormateada}</td>
+                    <td>${producto.estado}</td>
+                    <td class="button-cell">
+                        <button class="btn btn-success btn-activar">Activar</button>
+                    </td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', row);
+        }
+    });
+
+    // Agregar eventos a los botones de "Modificar" y "Eliminar"
+    document.querySelectorAll('.btn-modificar').forEach(button => {
+        button.addEventListener('click', handleModificar);
+    });
+    document.querySelectorAll('.btn-activar').forEach(button => {
+        button.addEventListener('click', handleActivar);
+    });
+}
+
 // Función para manejar la modificación de un producto
 function handleModificar(event) {
     const row = event.target.closest('tr');
-    const idProducto = row.getAttribute('data-id'); // Asegúrate de que este sea el valor correcto
+    const idProducto = row.getAttribute('data-id');
     const nombre = row.children[0].innerText;
     const cantidad = row.children[1].innerText;
     const precio = row.children[2].innerText.replace('$', '');
@@ -121,11 +164,34 @@ async function handleEliminar(event) {
     const row = event.target.closest('tr');
     const idProducto = row.getAttribute('data-id'); // Obtener el ID del producto
 
-    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-        await fetch(`http://localhost:4000/producto/${idProducto}`, {
-            method: 'DELETE'
+    if (confirm('¿Estás seguro de que deseas dar de baja este producto?')) {
+        await fetch(`http://localhost:4000/producto/baja/${idProducto}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ estado: 'Inactivo' })
         });
 
         getProductos(); // Actualiza la lista de productos después de eliminar
+        getInactiveProductos(); // Actualiza la lista de productos inactivos después de eliminar
+    }
+}
+
+async function handleActivar(event) {
+    const row = event.target.closest('tr');
+    const idProducto = row.getAttribute('data-id'); // Obtener el ID del producto
+
+    if (confirm('¿Estás seguro de que deseas activar este producto?')) {
+        await fetch(`http://localhost:4000/producto/alta/${idProducto}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ estado: 'Activo' })
+        });
+
+        getProductos(); // Actualiza la lista de productos después de activar
+        getInactiveProductos(); // Actualiza la lista de productos inactivos después de activar
     }
 }

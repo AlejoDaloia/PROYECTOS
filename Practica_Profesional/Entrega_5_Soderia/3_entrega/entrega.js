@@ -1,34 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
     cargarClientes();
-    cargarRutas();
     cargarProductos();
-    getPedidos();
-
+    cargarPedidos();
     document.querySelector(".btn-guardar").addEventListener("click", guardarPedido);
-    document.getElementById("shipmentDetail").style.display = 'none';
+    document.getElementById("filterForm").addEventListener("change", aplicarFiltros);
 });
+
+
+async function aplicarFiltros() {
+    const fechaDesde = document.getElementById("fechaDesde").value;
+    const fechaHasta = document.getElementById("fechaHasta").value;
+    const cliente = document.getElementById("filter-client").value;
+    const estado = document.getElementById("filter-status").value;
+
+    const params = new URLSearchParams({
+        ...(fechaDesde && { fechaDesde }),
+        ...(fechaHasta && { fechaHasta }),
+        ...(cliente && { cliente }),
+        ...(estado && { estado }),
+    });
+
+    try {
+        const res = await fetch(`http://localhost:4000/pedido/filtrar?${params.toString()}`);
+        const data = await res.json();
+        renderTabla(data.filter(p => p.estado === 'En camino'), data.filter(p => p.estado === 'Entregado'));
+    } catch (error) {
+        console.error("Error al aplicar los filtros:", error);
+    }
+}
 
 async function cargarClientes() {
     const res = await fetch("http://localhost:4000/cliente");
     const data = await res.json();
     const select = document.getElementById("cliente");
+    const selectFiltro = document.getElementById("filter-client");
     data.forEach(cliente => {
         const option = document.createElement("option");
         option.value = cliente.idCliente;
         option.textContent = cliente.nombre;
         select.appendChild(option);
     });
-}
-
-async function cargarRutas() {
-    const res = await fetch("http://localhost:4000/recorrido");
-    const data = await res.json();
-    const select = document.getElementById("ruta");
-    data.forEach(recorrido => {
+    data.forEach(cliente => {
         const option = document.createElement("option");
-        option.value = recorrido.idRecorrido;
-        option.textContent = recorrido.dia;
-        select.appendChild(option);
+        option.value = cliente.idCliente;
+        option.textContent = cliente.nombre;
+        selectFiltro.appendChild(option);
     });
 }
 
@@ -46,18 +62,20 @@ async function cargarProductos() {
 
 async function guardarPedido() {
     const clienteId = document.getElementById("cliente").value;
-    const rutaId = document.getElementById("ruta").value;
     const productoId = document.getElementById("producto").value;
     const cantidad = document.getElementById("cantidad").value;
+    const pedidoForm = document.getElementById("pedidoForm");
 
-    if (clienteId && rutaId && productoId && cantidad) {
+    if (!pedidoForm.checkValidity()) {
+        pedidoForm.reportValidity();
+        return;
+    }
+    if (clienteId && productoId && cantidad) {
         const pedido = {
             cliente: clienteId,
-            recorrido: rutaId,
             producto: productoId,
             cantidad: parseInt(cantidad)
         };
-
         await fetch("http://localhost:4000/pedido", {
             method: "POST",
             headers: {
@@ -65,68 +83,98 @@ async function guardarPedido() {
             },
             body: JSON.stringify(pedido)
         });
-
-        getPedidos();
-        
+        cargarPedidos();
         // Cerrar el modal
         const modalElement = document.getElementById("modalform");
         const modal = bootstrap.Modal.getInstance(modalElement);
-        
         if (modal) {
             modal.hide();
         }
-
         // Resetear el formulario
         document.getElementById("pedidoForm").reset();
-
-        // Muestra el div de detalles del pedido
-        document.getElementById("shipmentDetail").style.display = 'block';
     } else {
         alert("Por favor, completa todos los campos.");
     }
 }
 
-async function getPedidos() {
-    const res = await fetch("http://localhost:4000/pedido");
-    const data = await res.json();
-    const container = document.getElementById("pedidosContainer");
-    container.innerHTML = "";
+async function cargarPedidos() {
+    try {
+        const resEnCamino = await fetch("http://localhost:4000/pedido");
+        pedidosEnCamino = await resEnCamino.json();
 
-    if (data.length > 0) {
-        document.getElementById("shipmentDetail").style.display = "flex"; // Mostrar el div
-    } else {
-        document.getElementById("shipmentDetail").style.display = "none"; // Ocultar el div
+        const resEntregados = await fetch("http://localhost:4000/pedido/entregado");
+        pedidosEntregados = await resEntregados.json();
+
+        renderTabla(pedidosEnCamino,pedidosEntregados); // Mostrar los datos iniciales
+    } catch (error) {
+        console.error("Error al cargar los clientes:", error);
     }
+}
 
-    data.forEach(pedido => {
-        const item = document.createElement("div");
-        item.className = "shipment-item";
-        item.innerHTML = `
-            <p><strong>Cliente:</strong> ${pedido.cliente}</p>
-            <p><strong>Ruta:</strong> ${pedido.recorrido}</p>
-            <p><strong>Producto:</strong> ${pedido.producto}</p>
-            <p><strong>Cantidad:</strong> ${pedido.cantidad} unidades</p>
-            <p><strong>Fecha:</strong> ${new Date(pedido.fecha).toLocaleDateString('es-ES')}</p>
-            <p><strong>Estado:</strong> En camino</p>
-            <div class="button-group">
-                <button class="action-button btn-success btn-delivered" data-id="${pedido.idPedido}">Entregado</button>
-            </div>
-        `;
-        container.appendChild(item);
+async function renderTabla(pedidosEnCamino, pedidosEntregados) {
+    const tbodyEnCamino = document.querySelector('.order-table tbody');
+    tbodyEnCamino.innerHTML = '';
+    const tbodyEntregados = document.querySelector('.inactive-order-table tbody');
+    tbodyEntregados.innerHTML = '';
+
+    pedidosEnCamino.forEach(pedido => {
+        if (pedido.estado === 'En camino') { // Mostrar solo pedidos en camino
+            const row = `
+                <tr>
+                    <td>${pedido.cliente}</td>
+                    <td>${pedido.direccion}</td>
+                    <td>${pedido.nombre_barrio}</td>
+                    <td>${pedido.producto}</td>
+                    <td>${pedido.cantidad}</td>
+                    <td>${new Date(pedido.fecha).toLocaleDateString('es-ES')}</td>
+                    <td>${pedido.estado}</td>
+                    <td class="button-cell">
+                        <button class="btn btn-success deliver-button" data-id="${pedido.idPedido}">Entregar</button>
+                    </td>
+                </tr>
+            `;
+            tbodyEnCamino.insertAdjacentHTML('beforeend', row);
+        }
+    });
+    document.querySelectorAll('.deliver-button').forEach(button => {
+        button.addEventListener('click', handleEntregado);
     });
 
-    document.querySelectorAll(".btn-delivered").forEach(button => {
-        button.addEventListener("click", handleEntregado);
+    pedidosEntregados.forEach(pedido =>{
+        if(pedido.estado === 'Entregado'){
+            const row = `
+                <tr>
+                    <td>${pedido.cliente}</td>
+                    <td>${pedido.direccion}</td>
+                    <td>${pedido.nombre_barrio}</td>
+                    <td>${pedido.producto}</td>
+                    <td>${pedido.cantidad}</td>
+                    <td>${new Date(pedido.fecha).toLocaleDateString('es-ES')}</td>
+                    <td>${pedido.estado}</td>
+                </tr>
+            `;
+            tbodyEntregados.insertAdjacentHTML('beforeend', row);
+        }
     });
 }
 
 async function handleEntregado(event) {
     const idPedido = event.target.getAttribute("data-id");
-
     if (confirm("¿Estás seguro de que deseas marcar este pedido como entregado?")) {
-        await fetch(`http://localhost:4000/pedido/${idPedido}`, {
-            method: "DELETE"
-        });
-        getPedidos();
+        try {
+            const response = await fetch(`http://localhost:4000/pedido/${idPedido}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Error al marcar el pedido como entregado: ' + response.statusText);
+            }
+            cargarPedidos();
+        } catch (error) {
+            console.error('Error al marcar el pedido como entregado:', error);
+            alert('Error al marcar el pedido como entregado: ' + error.message);
+        }
     }
 }

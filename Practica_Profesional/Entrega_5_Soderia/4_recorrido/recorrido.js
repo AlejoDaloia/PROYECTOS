@@ -31,7 +31,6 @@ async function getRecorridos() {
     });
 }
 
-// Llenar el formulario para modificar un recorrido
 document.querySelector('.route-table').addEventListener('click', (e) => {
     if (e.target.classList.contains('mod-button')) {
         const row = e.target.closest('tr');

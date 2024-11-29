@@ -28,6 +28,7 @@
                 <a href="/3_entrega/entrega.html">Entregas</a>
                 <a id="cliente" href="/5_cliente/cliente.html">Clientes</a>
                 <a href="/4_recorrido/recorrido.html">Rutas</a>
+                <a href="/4_barrio/barrio.html">Barrios</a>
                 <a href="/0_login/login.html">Cerrar Sesión</a>
                 <footer>Handl3r &#169 2024</footer>
             </div>
@@ -39,7 +40,7 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Registrar Cliente</h5>
+                      <h5 class="modal-title" id="modal-title-text">Registrar Cliente</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -58,12 +59,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="barrio" class="form-label">Barrio</label>
-                                <input type="text" class="form-control" id="barrio" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ultima_compra" class="form-label">Ultima compra</label>
-                                <input type="date" class="form-control" id="ultima_compra" required>
-                            </div>                      
+                                <select class="form-control" id="barrio" required></select>
+                            </div>                
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -78,16 +75,43 @@
                     Nuevo cliente
                 </button>
             </div>
-
+            <div class="filters mb-4 d-flex justify-content-between">
+                <div>
+                    <input type="text" id="search-name" class="form-control" placeholder="Ingrese nombre">
+                </div>
+                <div>
+                    <select id="filter-status" class="form-select">
+                        <option value="todos">Todos</option>
+                        <option value="activo">Activos</option>
+                        <option value="inactivo">Inactivos</option>
+                    </select>
+                </div>
+            </div>
             <div class="table-responsive">
-                <table class="clients-table table table-bordered mt-3">
+                <table class="clients-table table table-bordered mt-3" id="active-table">
                     <thead>
                         <tr class="table-dark">
                             <th>Nombre</th>
                             <th>Teléfono</th>
                             <th>Domicilio</th>
                             <th>Barrio</th>
-                            <th>Última Compra</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="inactive-clients-table table table-bordered mt-3" id="inactive-table" style="display: none;">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Domicilio</th>
+                            <th>Barrio</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

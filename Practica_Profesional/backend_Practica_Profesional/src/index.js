@@ -6,40 +6,11 @@ const bcrypt = require("bcryptjs");
 
 const app = express();
 app.set("port", 4000);
-
 app.use(cors({
     origin: ["http://127.0.0.1:5500", "http://localhost:4000"]
-}));
+}));    
 app.use(morgan("dev"));
 app.use(express.json());
-
-// Endpoint para registrar usuarios
-app.post("/register", async (req, res) => {
-    try {
-        console.log(req.body); // Deberías ver el contenido aquí
-        const { username, passwordd } = req.body;
-
-        if (!username || !passwordd) {
-            return res.status(400).send("Faltan campos requeridos.");
-        }
-
-        // Conectarse a la base de datos
-        const connection = await connectDB();
-        if (!connection) {
-            return res.status(500).send("Error al conectar a la base de datos.");
-        }
-        // Hashear la contraseña
-        const hashedPassword = await bcrypt.hash(passwordd, 10);
-
-        // Guardar el usuario en la base de datos
-        await connection.query("INSERT INTO usuarios (username, passwordd) VALUES (?, ?)", [username, hashedPassword]);
-        res.status(201).send("Usuario registrado exitosamente.");
-        
-    } catch (error) {
-        console.error('Error en el registro de usuario:', error);
-        res.status(500).send('Error en el registro de usuario.');
-    }
-});
 
     // Endpoint para login
 app.post("/login", async (req, res) => {
@@ -71,7 +42,43 @@ app.post("/login", async (req, res) => {
 app.get("/cliente", async (req, res) => {
     try {
         const connection = await connectDB();
-        const result = await connection.query("SELECT * FROM cliente");
+        const result = await connection.query(`
+            SELECT cliente.*, 
+                barrio.nombre AS nombre_barrio
+            FROM cliente
+            JOIN Barrio ON cliente.barrio = barrio.idBarrio
+            WHERE cliente.estado = "Activo"
+        `);
+        res.json(result);
+    } catch (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).send('Error en la consulta');
+    }
+});
+
+app.get("/cliente/inactivos", async (req, res) => {
+    try {
+        const connection = await connectDB();
+        const result = await connection.query(`
+            SELECT cliente.*, 
+                barrio.nombre AS nombre_barrio
+            FROM cliente
+            JOIN Barrio ON cliente.barrio = barrio.idBarrio
+            WHERE cliente.estado = 'Inactivo'
+        `);
+        res.json(result);
+    } catch (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).send('Error en la consulta');
+    }
+});
+
+app.get("/cliente/total", async (req, res) => {
+    try {
+        const connection = await connectDB();
+        const result = await connection.query(`
+            SELECT COUNT(*) AS total_clientes FROM cliente
+        `);
         res.json(result);
     } catch (error) {
         console.error('Error en la consulta:', error);
@@ -81,12 +88,12 @@ app.get("/cliente", async (req, res) => {
 
 // Agregar un nuevo cliente
 app.post("/cliente", async (req, res) => {
-    const { nombre, contacto, direccion, barrio, ultima_compra } = req.body;
+    const { nombre, contacto, direccion, barrio } = req.body;
     try {
         const connection = await connectDB();
         await connection.query(
-            "INSERT INTO cliente (nombre, contacto, direccion, barrio, ultima_compra) VALUES (?, ?, ?, ?, ?)",
-            [nombre, contacto, direccion, barrio, ultima_compra]
+            "INSERT INTO cliente (nombre, contacto, direccion, barrio) VALUES (?, ?, ?, ?)",
+            [nombre, contacto, direccion, barrio]
         );
         res.status(201).send("Cliente agregado");
     } catch (error) {
@@ -98,15 +105,13 @@ app.post("/cliente", async (req, res) => {
 // Modificar un cliente existente
 app.put("/cliente/:idCliente", async (req, res) => {
     const { idCliente } = req.params;
-    const { nombre, contacto, direccion, barrio, ultima_compra } = req.body;
-
+    const { nombre, contacto, direccion, barrio } = req.body;
     console.log(`Modificando cliente ID: ${idCliente}`, req.body);
-
     try {
         const connection = await connectDB();
         await connection.query(
-            "UPDATE cliente SET nombre = ?, contacto = ?, direccion = ?, barrio = ?, ultima_compra = ? WHERE idCliente = ?",
-            [nombre, contacto, direccion, barrio, ultima_compra, idCliente]
+            "UPDATE cliente SET nombre = ?, contacto = ?, direccion = ?, barrio = ? WHERE idCliente = ?",
+            [nombre, contacto, direccion, barrio, idCliente]
         );
         res.send("Cliente modificado");
     } catch (error) {
@@ -115,16 +120,85 @@ app.put("/cliente/:idCliente", async (req, res) => {
     }
 });
 
-
-app.delete("/cliente/:idCliente", async (req, res) => {
+// Cambiar el estado del cliente a inactivo
+app.put("/cliente/baja/:idCliente", async (req, res) => {
     const { idCliente } = req.params;
     try {
         const connection = await connectDB();
-        await connection.query("DELETE FROM cliente WHERE idCliente = ?", [idCliente]);
-        res.send("Cliente eliminado");
+        await connection.query(
+            "UPDATE cliente SET estado = 'Inactivo' WHERE idCliente = ?",
+            [idCliente]
+        );
+        res.send("Cliente dado de baja");
     } catch (error) {
-        console.error('Error al eliminar cliente:', error);
-        res.status(500).send('Error al eliminar cliente');
+        console.error('Error al dar de baja al cliente:', error);
+        res.status(500).send('Error al dar de baja al cliente');
+    }
+});
+
+app.put("/cliente/alta/:idCliente", async (req, res) => {
+    const { idCliente } = req.params;
+    try {
+        const connection = await connectDB();
+        await connection.query(
+            "UPDATE cliente SET estado = 'Activo' WHERE idCliente = ?",
+            [idCliente]
+        );
+        res.send("Cliente dado de Alta");
+    } catch (error) {
+        console.error('Error al dar de Alta al cliente:', error);
+        res.status(500).send('Error al dar de Alta al cliente');
+    }
+});
+
+app.get("/barrio", async (req, res) => {
+    try {
+        const connection = await connectDB(); // Obtiene la conexión desde connectDB
+        const result = await connection.query(`SELECT * FROM barrio`);
+        res.json(result); // Retorna los resultados
+    } catch (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).send('Error en la consulta');
+    }
+});
+
+app.get("/barrios/clientes", async (req, res) => {
+    try {
+        const connection = await connectDB();
+        const result = await connection.query(`
+            SELECT 
+                b.idBarrio,
+                b.nombre,
+                COUNT(c.idCliente) AS cantidad_clientes
+            FROM Barrio b
+            INNER JOIN Cliente c ON b.idBarrio = c.barrio
+            GROUP BY b.idBarrio, b.nombre
+        `);
+        res.json(result);
+    } catch (error) {
+        console.error("Error en la consulta:", error);
+        res.status(500).send("Error en la consulta");
+    }
+});
+
+app.get("/barrios/:idBarrio/clientes", async (req, res) => {
+    const { idBarrio } = req.params;
+    try {
+        const connection = await connectDB();
+        const result = await connection.query(`
+            SELECT 
+                b.idBarrio,
+                b.nombre, 
+                COUNT(c.idCliente) AS cantidad_clientes
+            FROM Barrio b
+            LEFT JOIN Cliente c ON b.idBarrio = c.barrio
+            WHERE b.idBarrio = ?
+            GROUP BY b.idBarrio, b.nombre
+        `, [idBarrio]);
+        res.json(result);
+    } catch (error) {
+        console.error("Error en la consulta:", error);
+        res.status(500).send("Error en la consulta");
     }
 });
 
@@ -164,7 +238,7 @@ app.put("/recorrido/:idRecorrido", async (req, res) => {
         const connection = await connectDB();
         await connection.query(
             "UPDATE recorrido SET dia = ?, barrio_1 = ?, barrio_2 = ?, barrio_3 = ?, ultima_actualizacion = ? WHERE idRecorrido = ?",
-            [dia, barrio_1, barrio_2, barrio_3, ultima_actualizacion]
+            [dia, barrio_1, barrio_2, barrio_3, ultima_actualizacion, idRecorrido]
         );
         res.send("Recorrido modificado");
     } catch (error) {
@@ -192,15 +266,15 @@ app.get("/pedido", async (req, res) => {
         // Consulta para obtener los pedidos junto con la información relacionada
         const pedidos = await connection.query(`
             SELECT pedido.*, 
-                   cliente.nombre AS cliente, 
-                   recorrido.dia AS recorrido, 
-                   producto.tipo_producto AS producto
+                cliente.nombre AS cliente, 
+                barrio.nombre AS nombre_barrio,
+                cliente.direccion AS direccion,   
+                producto.tipo_producto AS producto
             FROM Pedido 
             JOIN Cliente ON pedido.cliente = cliente.idCliente
-            JOIN Recorrido ON pedido.recorrido = recorrido.idRecorrido
-            JOIN Producto ON pedido.p   roducto = producto.idProducto
+            JOIN Producto ON pedido.producto = producto.idProducto
+            JOIN Barrio ON cliente.barrio = barrio.idBarrio
         `);
-
         res.json(pedidos); // Retorna los resultados
     } catch (error) {
         console.error('Error en la consulta:', error);
@@ -208,14 +282,98 @@ app.get("/pedido", async (req, res) => {
     }
 });
 
+app.get("/pedido/entregado", async (req, res) => {
+    try {
+        const connection = await connectDB();
+
+        // Consulta para obtener los pedidos junto con la información relacionada
+        const pedidos = await connection.query(`
+            SELECT pedido.*, 
+                cliente.nombre AS cliente, 
+                barrio.nombre AS nombre_barrio,
+                cliente.direccion AS direccion,   
+                producto.tipo_producto AS producto
+            FROM Pedido 
+            JOIN Cliente ON pedido.cliente = cliente.idCliente
+            JOIN Producto ON pedido.producto = producto.idProducto
+            JOIN Barrio ON cliente.barrio = barrio.idBarrio
+            WHERE pedido.estado = 'Entregado'
+        `);
+        res.json(pedidos); // Retorna los resultados
+    } catch (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).send('Error en la consulta');
+    }
+});
+
+app.get("/pedido/filtrar", async (req, res) => {
+    try {
+        const { fechaDesde, fechaHasta, cliente, estado } = req.query;
+        console.log("Parámetros recibidos:", { fechaDesde, fechaHasta, cliente, estado });
+
+        const connection = await connectDB();
+        let query = `
+            SELECT pedido.*, 
+                cliente.nombre AS cliente, 
+                barrio.nombre AS nombre_barrio,
+                cliente.direccion AS direccion,   
+                producto.tipo_producto AS producto
+            FROM Pedido 
+            JOIN Cliente ON pedido.cliente = cliente.idCliente
+            JOIN Producto ON pedido.producto = producto.idProducto
+            JOIN Barrio ON cliente.barrio = barrio.idBarrio
+            WHERE 1 = 1
+        `;
+        const params = [];
+        if (fechaDesde) {
+            query += " AND pedido.fecha >= ?";
+            params.push(fechaDesde);
+        }
+        if (fechaHasta) {
+            query += " AND pedido.fecha <= ?";
+            params.push(fechaHasta);
+        }
+        if (cliente) {
+            query += " AND pedido.cliente = ?";
+            params.push(cliente);
+        }
+        if (estado) {
+            query += " AND pedido.estado = ?";
+            params.push(estado);
+        }
+
+        console.log("Query construida:", query, params);
+        const pedidos = await connection.query(query, params);
+        res.json(pedidos);
+    } catch (error) {
+        console.error("Error en el filtrado de pedidos:", error);
+        res.status(500).send("Error en el filtrado de pedidos");
+    }
+});
+
+app.put("/pedido/:idPedido", async (req, res) => {
+    const { idPedido } = req.params;
+    try {
+        const connection = await connectDB();
+        await connection.query(
+            "UPDATE pedido SET estado = 'Entregado' WHERE idPedido = ?",
+            [idPedido]
+        );
+        res.send("Pedido entregado");
+    } catch (error) {
+        console.error('Error al entregar pedido:', error);
+        res.status(500).send('Error al entregar pedido');
+    }
+});
+
 app.post("/pedido", async (req, res) => {
-    const { cliente, producto, recorrido, cantidad, estado } = req.body;
+    const { cliente, producto, cantidad} = req.body;
     const fecha = new Date().toISOString().split('T')[0];
     try {
         const connection = await connectDB();
         await connection.query(
-            "INSERT INTO pedido (fecha, cliente, producto, recorrido, cantidad, estado) VALUES (?, ?, ?, ?, ?, ?)",
-            [fecha, cliente, producto, recorrido, cantidad, estado]
+            "INSERT INTO pedido (fecha, cliente, producto, cantidad) VALUES (?, ?, ?, ?)",
+            [fecha, cliente, producto, cantidad]
         );
         res.status(201).send("Recorrido agregado");
     } catch (error) {
@@ -227,8 +385,25 @@ app.post("/pedido", async (req, res) => {
 app.get("/producto", async (req, res) => {
     try {
         const connection = await connectDB(); // Obtiene la conexión desde connectDB
-        const result = await connection.query("SELECT * FROM producto"); // Realiza la consulta
-        res.json(result); // Retorna los resultados
+        const result = await connection.query(`
+            SELECT * FROM producto
+            WHERE estado = 'Activo'
+            `);
+        res.json(result);
+    } catch (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).send('Error en la consulta');
+    }
+});
+
+app.get("/producto/inactivos", async (req, res) => {
+    try {
+        const connection = await connectDB();
+        const result = await connection.query(`
+            SELECT * FROM producto
+            WHERE estado = 'Inactivo'
+        `);
+        res.json(result);
     } catch (error) {
         console.error('Error en la consulta:', error);
         res.status(500).send('Error en la consulta');
@@ -253,25 +428,14 @@ app.post("/producto", async (req, res) => {
     }
 });
 
-app.delete('/pedido/:idPedido', async (req, res) => {
-    const { idPedido } = req.params;
-    try {
-        const connection = await connectDB();
-        await connection.query('DELETE FROM Pedido WHERE idPedido = ?', [idPedido]);
-        res.status(200).json({ message: 'Pedido eliminado' });
-    } catch (error) {
-        console.error('Error al eliminar el pedido:', error);
-        res.status(500).json({ error: 'Error al eliminar el pedido' });
-    }
-});
-
 //modificar producto
 app.put('/producto/:idProducto', async (req, res) => {
     const { idProducto } = req.params;
     const { tipo_producto, cantidad, precio } = req.body;
     try {
         const connection = await connectDB();
-        await connection.query('UPDATE producto SET tipo_producto = ?, cantidad = ?, precio = ?, ultima_actualizacion = NOW() WHERE idProducto = ?', [tipo_producto, cantidad, precio, idProducto]);
+        await connection.query('UPDATE producto SET tipo_producto = ?, cantidad = ?, precio = ?, ultima_actualizacion = NOW() WHERE idProducto = ?', 
+            [tipo_producto, cantidad, precio, idProducto]);
         res.status(200).json({ message: 'Producto actualizado' });
     } catch (error) {
         console.error('Error al actualizar el producto:', error);
@@ -279,16 +443,29 @@ app.put('/producto/:idProducto', async (req, res) => {
     }
 });
 
-// Ruta para eliminar un producto
-app.delete('/producto/:idProducto', async (req, res) => {
+app.put('/producto/baja/:idProducto', async (req, res) => {
     const { idProducto } = req.params;
     try {
         const connection = await connectDB();
-        await connection.query('DELETE FROM producto WHERE idProducto = ?', [idProducto]);
-        res.status(200).json({ message: 'Producto eliminado' });
+        await connection.query('UPDATE producto SET estado = ?, ultima_actualizacion = NOW() WHERE idProducto = ?', 
+            ['Inactivo', idProducto]);
+        res.status(200).json({ message: 'Producto actualizado' });
     } catch (error) {
-        console.error('Error al eliminar el producto:', error);
-        res.status(500).json({ error: 'Error al eliminar el producto' });
+        console.error('Error al actualizar el producto:', error);
+        res.status(500).json({ error: 'Error al actualizar el producto' });
+    }
+});
+
+app.put('/producto/alta/:idProducto', async (req, res) => {
+    const { idProducto } = req.params;
+    try {
+        const connection = await connectDB();
+        await connection.query('UPDATE producto SET estado = ?, ultima_actualizacion = NOW() WHERE idProducto = ?', 
+            ['Activo', idProducto]);
+        res.status(200).json({ message: 'Producto actualizado' });
+    } catch (error) {
+        console.error('Error al actualizar el producto:', error);
+        res.status(500).json({ error: 'Error al actualizar el producto' });
     }
 });
 

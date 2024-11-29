@@ -6,8 +6,8 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: fuente;
+    box-sizing: border-box;
 }
 
 body {
@@ -49,108 +49,14 @@ img {
     border-radius: 25px;
 }
 
-.content {
-    margin-top: 80px;
-    width: 80%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.content h2 {
-    font-size: 36px;
-    margin-bottom: 30px;
-    color: #000;
-}
-
-.shipment-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-}
-
-.shipment-item {
-    background: rgb(0, 95, 116);
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Asegura que ocupe todo el ancho disponible */
-    box-sizing: border-box;
-}
-
-.shipment-item:hover {
-    transform: scale(1.02);
-}
-
-.shipment-item p {
-    font-size: 18px;
-    margin: 5px 0;
-}
-
-.button-group {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-}
-
-.action-button {
-    font-size: 18px;
-    padding: 10px 20px;
-    margin: 0 10px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 48%;
-    transition: background-color 0.3s ease;
-}
-
-.action-button.btn-info {
-    background-color: #17a2b8;
-}
-
-.action-button.btn-info:hover {
-    background-color: #138496;
-}
-
-.action-button.btn-success {
-    background-color: #28a745;
-}
-
-.action-button.btn-success:hover {
-    background-color: #218838;
-}
-
-.add-button {
-    background-color: #28a745;
-    color: #fff;
-    font-size: 18px;
-    border-radius: 5px;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.add-button:hover {
-    background-color: #218838;
-}
-
 .modal-header {
-    background-color: #000;
-    color: #fff;
+    background-color: #000000;
+    color: #ffffff;
 }
 
 .modal-footer .btn-primary {
-    background-color: #000;
-    border-color: #000;
+    background-color: #000000;
+    border-color: #000000;
 }
 
 .openbtn {
@@ -164,8 +70,8 @@ img {
 }
 
 .openbtn:hover {
-    background-color: #fff;
-    color: #000;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .offcanvas-body {
@@ -177,7 +83,6 @@ img {
 
 .side-panel {
     background: #000000;
-    padding-top: 20px;
 }
 
 .side-panel a {
@@ -185,9 +90,7 @@ img {
     text-decoration: none;
     display: block;
     font-size: 25px;
-    color: #fff;
-    width: 100%;
-    text-align: left;
+    color: #ffffff;
 }
 
 .side-panel a:hover {
@@ -202,26 +105,71 @@ img {
     padding: 15px;
     color: #ffffff;
     text-align: center;
-    margin-top: auto;
+    margin-top: auto; /* Alinea el footer en la parte inferior */
 }
 
-/* Responsivo */
+.content {
+    margin-top: 100px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.content h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #000000;
+}
+
+.order-table tbody tr {
+    background-color: #ffffff;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.order-table {
+    width: 100%;
+    min-width: 600px; /* Asegura que la tabla no se reduzca demasiado en pantallas pequeñas */
+}
+
+.button-cell {
+    display: flex;
+    justify-content: center; /* Centra los botones en la celda */
+    gap: 5px; /* Ajusta el espacio entre los botones */
+    padding: 0;
+}
+
+.button-cell .action-button {
+    margin: 0;
+}
+
+/* Ajustes para pantallas más pequeñas */
 @media (max-width: 768px) {
-    .shipment-item {
-        width: 100%;
-        padding: 15px;
-        font-size: 16px;
+    .header-box {
+        height: auto;
+        padding: 10px;
     }
-
-    .content h2 {
-        font-size: 28px;
+    
+    .header-content {
+        flex-direction: column; /* Coloca el logo y el botón en una columna */
+        align-items: center; /* Centra los elementos */
+        justify-content: center;
+        font-size: 18px;
     }
-
-    .action-button {
-        font-size: 16px;
-        padding: 8px 16px;
+    
+    img {
+        margin-left: 0; /* Elimina el margen izquierdo en pantallas pequeñas */
+        margin-bottom: 10px; /* Añade un margen inferior si es necesario */
     }
-
+    
     .openbtn {
         font-size: 18px;
         padding: 8px 12px;
@@ -229,20 +177,10 @@ img {
 }
 
 @media (max-width: 576px) {
-    .shipment-item {
-        padding: 10px;
-        font-size: 14px;
+    .header-content {
+        font-size: 16px;
     }
-
-    .content h2 {
-        font-size: 24px;
-    }
-
-    .action-button {
-        font-size: 14px;
-        padding: 6px 12px;
-    }
-
+    
     .openbtn {
         font-size: 16px;
         padding: 6px 10px;

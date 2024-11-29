@@ -134,9 +134,11 @@ img {
 .table-responsive {
     width: 100%;
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 400px;
 }
 
-.inventory-table {
+.inventory-table tbody tr {
     width: 100%;
     min-width: 600px; /* Asegura que la tabla no se reduzca demasiado en pantallas pequeñas */
 }
@@ -152,6 +154,7 @@ img {
     margin: 0; /* Elimina el margen de los botones */
 }
 
+/* Ajustes para pantallas más pequeñas */
 @media (max-width: 768px) {
     .header-box {
         height: auto;

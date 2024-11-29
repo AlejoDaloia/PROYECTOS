@@ -28,12 +28,13 @@
                 <a href="/3_entrega/entrega.html">Entregas</a>
                 <a href="/5_cliente/cliente.html">Clientes</a>
                 <a href="/4_recorrido/recorrido.html">Rutas</a>
+                <a href="/4_barrio/barrio.html">Barrios</a>
                 <a href="/0_login/login.html">Cerrar Sesión</a>
                 <footer>Handl3r &#169 2024</footer>
             </div>
         </div>
 
-        <div class="content text-center mt-5 container">
+        <div class="content d-flex flex-column align-items-center">
             <h2>INVENTARIO</h2>
             <div class="modal fade" id="modalform" tabindex="-1" aria-labelledby="modalformLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -70,22 +71,37 @@
             </button>
 
             <div class="table-responsive">
-                <table class="table table-bordered mt-3 inventory-table">
+                <table class="inventory-table table table-bordered mt-3" id="active-table">
                     <thead>
                         <tr class="table-dark">
                             <th>Producto</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
                             <th>Última Actualización</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
                     </tbody>
                 </table>
             </div>
-            
+            <div class="table-responsive">
+                <table class="inactive-inventory-table table table-bordered mt-3" id="inactive-table">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Última Actualización</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

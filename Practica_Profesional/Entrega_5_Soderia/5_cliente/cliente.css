@@ -131,6 +131,8 @@ img {
 .table-responsive {
     width: 100%;
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 400px;
 }
 
 .clients-table {

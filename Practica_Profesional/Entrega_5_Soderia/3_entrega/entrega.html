@@ -27,6 +27,7 @@
             <a id="entrega" href="/3_entrega/entrega.html">Entregas</a>
             <a href="/5_cliente/cliente.html">Clientes</a>
             <a href="/4_recorrido/recorrido.html">Rutas</a>
+            <a href="/4_barrio/barrio.html">Barrios</a>
             <a href="/0_login/login.html">Cerrar Sesión</a>
             <footer>Handl3r &#169 2024</footer>
         </div>
@@ -46,19 +47,15 @@
                         <form id="pedidoForm">
                             <div class="mb-3">
                                 <label for="cliente" class="form-label">Cliente</label>
-                                <select class="form-control" id="cliente"></select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="ruta" class="form-label">Ruta</label>
-                                <select class="form-control" id="ruta"></select>
+                                <select class="form-control" id="cliente" required></select>
                             </div>
                             <div class="mb-3">
                                 <label for="producto" class="form-label">Producto</label>
-                                <select class="form-control" id="producto"></select>
+                                <select class="form-control" id="producto" required></select>
                             </div>
                             <div class="mb-3">
                                 <label for="cantidad" class="form-label">Cantidad</label>
-                                <input type="text" class="form-control" id="cantidad">
+                                <input type="text" class="form-control" id="cantidad" required>
                             </div>
                         </form>
                     </div>
@@ -73,9 +70,70 @@
         <button class="add-button btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#modalform">
             Nueva entrega
         </button>        
-
-        <div class="shipment-detail" id="shipmentDetail" style="display: none;">
-            <div id="pedidosContainer"></div>
+        
+        <div class="filter-container">
+            <form id="filterForm">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="fechaDesde">Desde:</label>
+                        <input type="date" id="fechaDesde" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fechaHasta">Hasta:</label>
+                        <input type="date" id="fechaHasta" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filter-client">Cliente:</label>
+                        <select id="filter-client" class="form-control">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filter-status">Estado:</label>
+                        <select id="filter-status" class="form-control">
+                            <option value="">Todos</option>
+                            <option value="En camino">En camino</option>
+                            <option value="Entregado">Entregado</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="order-table table table-bordered mt-3" id="active-table">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Cliente</th>
+                        <th>Direccion</th>
+                        <th>Barrio</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive">
+            <table class="inactive-order-table table table-bordered mt-3" id="inactive-table">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Cliente</th>
+                        <th>Direccion</th>
+                        <th>Barrio</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 
