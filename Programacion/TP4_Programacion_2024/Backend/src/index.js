@@ -1,8 +1,10 @@
-const express = require("express");
-const morgan = require("morgan");
+//Importación de librerías
+const express = require("express"); //Procesa peticiones json y gestiona configuraciones de servidor
+const morgan = require("morgan"); //Permite tener un registro en la consola de cada petición hecha
 const { connectDB } = require("./database");
-const cors = require("cors");
+const cors = require("cors"); //Añade automáticamente los encabezados HTTP adecuados para permitir estas solicitudes entre diferentes dominios.
 
+//Seteo de puerto y configuración
 const app = express();
 app.set("port", 4000);
 app.use(cors({
@@ -11,6 +13,7 @@ app.use(cors({
 app.use(morgan("dev"));
 app.use(express.json());
 
+//Consulta a la base de datos para obtener todos los productos
 app.get('/producto', async (req, res) => {
     const { search = '', rubro = '' } = req.query;
     let query = `
@@ -33,6 +36,7 @@ app.get('/producto', async (req, res) => {
     }
 });
 
+//Consulta a la base de datos para obtener todos los rubros
 app.get('/rubro', async (req, res) => {
     try {
         const connection = await connectDB();
@@ -43,6 +47,8 @@ app.get('/rubro', async (req, res) => {
         res.status(500).json({ message: "Error al obtener rubros" });
     }
 });
+
+//Inicio del servidor
 app.listen(app.get("port"), () => {
     console.log('Servidor escuchando en el puerto ' + app.get("port"));
 });

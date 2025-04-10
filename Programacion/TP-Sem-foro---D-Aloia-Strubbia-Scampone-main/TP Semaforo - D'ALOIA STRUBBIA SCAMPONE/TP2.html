@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semaforo</title>
+    <link rel="stylesheet" href="/TP2.css">
+</head>
+<body>
+    <div class="container">
+        <div id="semaforo_1" class="semaforo_1">
+            <div id="roja" class="roja" color="red"></div>
+            <div id="amarilla" class="amarilla" color="yellow"></div>
+            <div id="verde" class="verde" color="green"></div>
+        </div>
+        <div id="semaforo_2" class="semaforo_2">
+            <div id="roja_2" class="roja_2"></div>
+            <div id="amarilla_2" class="amarilla_2"></div>
+            <div id="verde_2" class="verde_2"></div>
+        </div>
+    </div>
+    <div class="Piso"></div>
+    <div class="Palo1"></div>
+    <div class="Palo2"></div>
+    <button id="Cambio" class="Cambio" onclick=cambiar()>Cambio ↓↑-↑↓</button>
+    <button id="todo" class="timer" onclick=automatico()>Timer</button>
+    <button id="stop" class="paro" onclick=stop()>Intermitente</button>
+    <button id ="Apagado" class="Apagar" onclick=apagar()>Apagar</button>
+    <script src="/TP2.js"></script>
+</body>
+</html>

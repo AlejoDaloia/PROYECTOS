@@ -1,3 +1,4 @@
+//Fetch para agregar rubros al select
 async function fetchRubros() {
     const res = await fetch("http://localhost:4000/rubro");
     const rubros = await res.json();
@@ -10,6 +11,7 @@ async function fetchRubros() {
     });
 }
 
+//Fetch de productos y envia los parametros de busqueda y rubro
 async function fetchProductos() {
     const search = document.getElementById("search").value;
     const rubro = document.getElementById("rubro-filter").value;
@@ -18,6 +20,7 @@ async function fetchProductos() {
     renderProductos(productos);
 }
 
+//Renderiza los productos en la vista
 function renderProductos(productos) {
     const container = document.getElementById("products-container");
     container.innerHTML = '';
@@ -34,10 +37,11 @@ function renderProductos(productos) {
     });
 }
 
+//Funcionalidad para la busqueda y el filtro
 document.getElementById("search").addEventListener("input", fetchProductos);
 document.getElementById("rubro-filter").addEventListener("change", fetchProductos);
 
-// Alternar vistas
+//Alternar vistas
 document.getElementById("list-view").addEventListener("click", () => {
     document.getElementById("products-container").classList.add("list-view");
     document.getElementById("products-container").classList.remove("grid-view");
@@ -47,5 +51,5 @@ document.getElementById("grid-view").addEventListener("click", () => {
     document.getElementById("products-container").classList.remove("list-view");
 });
 
-fetchRubros(); // Cargar rubros al iniciar
-fetchProductos(); // Cargar productos al iniciar
+fetchRubros(); //Cargar rubros al iniciar
+fetchProductos(); //Cargar productos al iniciar
