@@ -14,6 +14,8 @@ const connectDB = async () => {
             password: process.env.PASSWORD
         });
         console.log("Conexión establecida con éxito.");
+    } else {
+        console.log("Error.");
     }
     return connection;
 };
