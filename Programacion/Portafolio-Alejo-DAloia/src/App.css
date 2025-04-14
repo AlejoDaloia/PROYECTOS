@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.App {
+  margin: 0;
+  background-color: #DAFDBA;
+  min-height: 100vh;
+  font-family: 'josefin sans';
+}
+
+.Primer-bloque {
+  width: 1220px;
+  min-width: 1220px;
+  margin: auto;
+  padding: 20px;
+}
+
+.Encabezado {
+  display: flex;
+  align-items: center;
+  background-color: #45C4B0;
+  padding: 10px;
+}
+
+.Encabezado h1{
+  margin: 0;
+  color: white;
+  max-width: 497px;
+}
+
+.Encabezado p{
+  color: white;
+  max-width: 781px;
+}
+
+.Imagen{
+  width: 427px;
+  height: 398px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.tech .iconos img{
+  width: 80px;
+  margin: 10px;
+}
+
+.github img{
+  width: 70px;
+  margin: 10px;
+}
+
+.curriculum img{
+  width: 100px;
+  margin: 10px;
+}
+
+.whatsapp, .telefono, .mail p{
+  background: #45C4B0;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.whatsapp img, .telefono img, .mail img{
+  width: 60px;
+  height: 60px;
+}
+
