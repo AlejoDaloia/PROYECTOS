@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 
+/*colores - DAFDBA - 9AEBA3 - 45C4B0 */
+
 .App {
   margin: 0;
   background-color: #DAFDBA;
@@ -8,64 +10,215 @@
 }
 
 .Primer-bloque {
-  width: 1220px;
-  min-width: 1220px;
-  margin: auto;
   padding: 20px;
 }
 
 .Encabezado {
+  width: 160vh;
+  min-width: 160vh;
+  height: 60vh;
   display: flex;
-  align-items: center;
   background-color: #45C4B0;
+  padding: 0px;
+  margin: auto;
+}
+
+.Info {
   padding: 10px;
 }
 
-.Encabezado h1{
+.Info h1{
+  text-align: center;
   margin: 0;
   color: white;
   max-width: 497px;
+  font-size: 50px;
 }
 
-.Encabezado p{
+.Info p{
+  text-align: left;
   color: white;
   max-width: 781px;
+  font-size: 30px;
 }
 
 .Imagen{
-  width: 427px;
-  height: 398px;
+  min-height: 60vh;
 }
 
-.section {
-  margin-top: 20px;
+section {
+  margin-left: 20px;
 }
 
-.tech .iconos img{
-  width: 80px;
+.segundo-bloque{
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-tech-trabajo{
+  min-width: 800px;
+  max-width: 800px;
+}
+
+.iconos img{
+  width: 10vh;
   margin: 10px;
 }
 
-.github img{
-  width: 70px;
-  margin: 10px;
-}
-
-.curriculum img{
-  width: 100px;
-  margin: 10px;
-}
-
-.whatsapp, .telefono, .mail p{
+.iconos{
   background: #45C4B0;
   color: white;
   padding: 10px;
-  border-radius: 5px;
   margin: 5px 0;
+  width: 97.5%;
+  min-width: 97.5%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.git-cv{
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.git{
+  text-align: center;
+  font-size:20px;
+  background: #45C4B0;
+  color: white;
+  padding: 10px;
+  margin: 5px 0;
+  width: 90%;
+  min-width: 90%;
+  min-height: 150px;
+  max-height: 150px;
+}
+
+.cv{
+  text-align: center;
+  font-size: 20px;
+  background: #45C4B0;
+  color: white;
+  padding: 10px;
+  margin: 5px 0;
+  min-height: 150px;
+  max-height: 150px;
+}
+
+.git img{
+  width: 10vh;
+  margin: 0px;
+}
+
+.curriculum img{
+  width: 12vh;
+  margin: 0px;
+}
+
+.div-contacto{
+  margin-right: 20px;
+  max-width: 400px;
+  min-width: 400px;
+}
+
+.whatsapp, .telefono, .mail{
+  background: #45C4B0;
+  color: white;
+  padding: 10px;
+  margin: 5px 0;
+  display: flex;
+}
+
+.whatsapp{
+  width:  70%;
+  font-size: 20px;
+}
+
+.telefono{
+  width: 80%;
+  font-size: 20px;
+}
+
+.mail{
+  width: 90%;
+  font-size: 20px;
 }
 
 .whatsapp img, .telefono img, .mail img{
-  width: 60px;
-  height: 60px;
+  padding-right: 20px;
+  
 }
 
+.whatsapp img, .telefono img, .mail img{
+  width: 10vh;
+  height: 10vh;
+}
+
+.telefono, .mail:not(.whatsapp){
+  margin-top: 47px;  
+}
+
+@media (max-width: 1024px) {
+  .Encabezado {
+    flex-direction: column;
+    width: 90%;
+    min-width: auto;
+    height: auto;
+    text-align: center;
+  }
+
+  .Imagen {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+  }
+
+  .segundo-bloque {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .div-tech-trabajo,
+  .div-contacto {
+    min-width: 90%;
+    max-width: 90%;
+  }
+
+  .git-cv {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .git,
+  .cv {
+    width: 90%;
+  }
+
+  .Info h1 {
+    font-size: 36px;
+  }
+
+  .Info p {
+    font-size: 20px;
+  }
+
+  .iconos {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .iconos img {
+    width: 8vh;
+    margin: 5px;
+  }
+
+  .whatsapp, .telefono, .mail {
+    width: 90%;
+    font-size: 16px;
+  }
+
+  .whatsapp img, .telefono img, .mail img {
+    width: 8vh;
+    height: 8vh;
+  }
+}

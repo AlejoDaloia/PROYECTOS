@@ -1,0 +1,76 @@
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <div class="Primer-bloque">
+        <header class="Encabezado">
+          <div className="Info">
+            <h1 class="Nombre">ALEJO D'ALOIA</h1>
+            <p>
+              Soy un desarrollador web de nivel junior especializado en back-end. Me formé en el instituto de nivel superior Leibnitz en la carrera de analista en sistemas. Busco cada día encontrar formas de poder mejorar y nuevos desafíos que superar.
+            </p>
+          </div>
+          <img src='/imagen_portafolio.jpeg' alt='Imagen' class="Imagen"></img>
+        </header>
+      </div>
+      <div class="segundo-bloque">
+        <div class="div-tech-trabajo">
+          <section class="seccion-tech">
+            <h2>Trabajo con</h2>
+            <div class="iconos">
+              <img src="/html5.png" alt="icono"></img>
+              <img src="/css.png" alt="icono"></img>
+              <img src="/javascript.png" alt="icono"></img>
+              <img src="/nodedotjs.png" alt="icono"></img>
+              <img src="/mysql.png" alt="icono"></img>
+            </div>
+          </section>
+          <div class="git-cv">
+            <section class="seccion-github">
+              <h2>Mi Github</h2>
+              <div class="git">
+                <a href="https://github.com/AlejoDaloia/PROYECTOS.git">
+                  <img src="/github.png" alt="ir a github"></img>
+                </a>
+                <p>
+                  Mi perfil de github donde podrán explorar los proyectos en los que he trabajado.
+                </p>
+              </div>
+            </section>
+            <section class="curriculum">
+              <h2>Mi CV</h2>
+              <div class="cv">
+                <a href="/Curriculum_Vitae_Alejo_D'Aloia.pdf" download>
+                  <img src="/resume.png" alt="descargar curriculum"></img>
+                </a>
+                <p>
+                  Mi curriculum por si hay consideraciones.
+                </p>
+              </div>
+            </section>
+          </div>       
+        </div>
+        <div class="div-contacto">
+              <h2>Contactame</h2>
+              <div class="whatsapp">
+              <a href="https://wa.me/543534063618">
+                <img src="/whatsapp.png" alt="contactarme whatsapp"></img>
+              </a>
+                <p>Mi whatsapp</p>
+              </div>
+              <div class="telefono">
+                <img src="/phone-call.png" alt="icono"></img>
+                <p>+54 03534063618</p>
+              </div>
+              <div class="mail">
+                <img src="/mail.png" alt="icono"></img>
+                <p>alejodaloia03@gmail.com</p>
+              </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
